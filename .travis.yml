@@ -2,19 +2,4 @@ language: java
 jdk:
  - oraclejdk8
 # whitelist
- branches:
-   only:
-   - master
- services:
- - mysql
- test:
-   adapter: mysql2
-   database: ponto_inteligente
-   username: root
-   password: root
-   encoding: utf8
- before_install:
- - mysql -e 'CREATE DATABASE IF NOT EXISTS ponto_inteligente;'
- - sudo mysql -e "use mysql; update user set authentication_string=PASSWORD('root') where User='root'; update user set plugin='mysql_native_password';FLUSH PRIVILEGES;"
- - sudo mysql_upgrade -u root -pnew_password
- - sudo service mysql restart
+
