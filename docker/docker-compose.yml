@@ -1,0 +1,13 @@
+mysql:
+    container_name: ponto_inteligente
+    build: mysql
+    environment:
+        - MYSQL_DATABASES=ponto_inteligente
+        - MYSQL_ROOT_PASSWORD=root
+        - MYSQL_HOST=localhost
+        - MYSQL_PORT=33306
+        - MYSQL_USER=root
+        - MYSQL_PASSWORD=root
+        - MYSQL_MY_DATABASE=ponto_inteligente
+    ports:
+        - "33306:3306"
