@@ -2,6 +2,7 @@ package com.ads.pontointeligente.response;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Response<T> {
 
@@ -30,4 +31,6 @@ public class Response<T> {
         this.errors = errors;
     }
 
+    public void setData(Optional<T> converterLancamentoDto) {
+    }
 }
