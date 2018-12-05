@@ -1,4 +1,4 @@
-package com.ads.pontointeligente.controller;
+package com.ads.pontointeligente.controllers;
 
 import java.security.NoSuchAlgorithmException;
 
