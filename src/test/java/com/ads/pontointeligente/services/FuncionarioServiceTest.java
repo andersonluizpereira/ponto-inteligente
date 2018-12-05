@@ -53,14 +53,14 @@ public class FuncionarioServiceTest {
 
     @Test
     public void testBuscarFuncionarioPorEmail() {
-        Optional<Funcionario> funcionario = Optional.ofNullable(this.funcionarioService.buscarPorEmail("email@email.com"));
+        Optional<Optional<Funcionario>> funcionario = Optional.ofNullable(this.funcionarioService.buscarPorEmail("email@email.com"));
 
         assertTrue(funcionario.isPresent());
     }
 
     @Test
     public void testBuscarFuncionarioPorCpf() {
-        Optional<Funcionario> funcionario = Optional.ofNullable(this.funcionarioService.buscarPorCpf("24291173474"));
+        Optional<Optional<Funcionario>> funcionario = Optional.ofNullable(this.funcionarioService.buscarPorCpf("24291173474"));
 
         assertTrue(funcionario.isPresent());
     }
