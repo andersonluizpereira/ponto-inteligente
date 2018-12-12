@@ -6,9 +6,12 @@ import com.ads.pontointeligente.entities.Funcionario;
 import com.ads.pontointeligente.security.JwtUserFactory;
 import com.ads.pontointeligente.services.FuncionarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 

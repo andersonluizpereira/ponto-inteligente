@@ -126,6 +126,12 @@
 			<artifactId>spring-security-test</artifactId>
 		</dependency>
 
+		<!-- EhCache -->
+		<dependency>
+			<groupId>net.sf.ehcache</groupId>
+			<artifactId>ehcache</artifactId>
+		</dependency>
+
 		<!--  Hibernate validator -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
