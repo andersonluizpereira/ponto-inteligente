@@ -7,7 +7,7 @@ import org.springframework.test.context.ActiveProfiles;
 
 @SpringBootApplication
 @EnableCaching
-@ActiveProfiles("test")
+@ActiveProfiles("dev")
 public class Application {
 
 	public static void main(String[] args) {

@@ -19,7 +19,7 @@ import springfox.documentation.swagger.web.SecurityConfiguration;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
-@Profile("test")
+@Profile("dev")
 @EnableSwagger2
 public class SwaggerConfig {
 
