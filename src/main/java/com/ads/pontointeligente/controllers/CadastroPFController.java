@@ -1,37 +1,38 @@
 package com.ads.pontointeligente.controllers;
 
-import java.math.BigDecimal;
-import java.security.NoSuchAlgorithmException;
-import java.util.Optional;
-
-import javax.validation.Valid;
-
+import com.ads.pontointeligente.command.AddCadastroPfCommand;
 import com.ads.pontointeligente.dtos.CadastroPFDto;
-import com.ads.pontointeligente.entities.Empresa;
 import com.ads.pontointeligente.entities.Funcionario;
 import com.ads.pontointeligente.enums.PerfilEnum;
 import com.ads.pontointeligente.response.Response;
 import com.ads.pontointeligente.services.EmpresaService;
 import com.ads.pontointeligente.services.FuncionarioService;
 import com.ads.pontointeligente.utils.PasswordUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.axonframework.commandhandling.gateway.CommandGateway;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+
+@Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/api/cadastrar-pf")
 @CrossOrigin(origins = "*")
 public class CadastroPFController {
 
-    private static final Logger log = LoggerFactory.getLogger(CadastroPFController.class);
+    // private static final Logger log = LoggerFactory.getLogger(CadastroPFController.class);
+
+    private CommandGateway commandGateway;
 
     @Autowired
     private EmpresaService empresaService;
@@ -39,48 +40,31 @@ public class CadastroPFController {
     @Autowired
     private FuncionarioService funcionarioService;
 
-    public CadastroPFController() {
-    }
-
     /**
      * Cadastra um funcionário pessoa física no sistema.
      *
-     * @param cadastroPFDto
-     * @param result
-     * @return ResponseEntity<Response<CadastroPFDto>>
+     * @param cmd
+  //   * @param result
+     * @return ResponseEntity<Response < CadastroPFDto>>
      * @throws NoSuchAlgorithmException
      */
     @PostMapping
-    public ResponseEntity<Response<CadastroPFDto>> cadastrar(@Valid @RequestBody CadastroPFDto cadastroPFDto,
-                                                             BindingResult result) throws NoSuchAlgorithmException {
-        log.info("Cadastrando PF: {}", cadastroPFDto.toString());
-        Response<CadastroPFDto> response = new Response<CadastroPFDto>();
-
-        validarDadosExistentes(cadastroPFDto, result);
-        Funcionario funcionario = this.converterDtoParaFuncionario(cadastroPFDto, result);
-
-        if (result.hasErrors()) {
-            log.error("Erro validando dados de cadastro PF: {}", result.getAllErrors());
-            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
-            return ResponseEntity.badRequest().body(response);
-        }
-
-        Optional<Empresa> empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getCnpj());
-        empresa.ifPresent(emp -> funcionario.setEmpresa(emp));
-        this.funcionarioService.persistir(funcionario);
-
-        response.setData(this.converterCadastroPFDto(funcionario));
-        return ResponseEntity.ok(response);
+    public CompletableFuture<String> cadastrar(@Valid @RequestBody CadastroPFDto cmd) {
+        log.info("Cadastrando PF: {}", cmd.toString());
+       // var command = new AddCadastroPfCommand(UUID.randomUUID().toString(), cmd.getNome(), cmd.getEmail(), cmd.getSenha(), cmd.getCpf(), cmd.getValorHora(), cmd.getQtdHorasTrabalhoDia(), cmd.getQtdHorasAlmoco(), cmd.getCnpj());
+        var command = new AddCadastroPfCommand(UUID.randomUUID().toString(), cmd.getNome());
+        log.info("Executing command: {}", command);
+        return commandGateway.send(command);
     }
 
-    /**
+   /* *//**
      * Verifica se a empresa está cadastrada e se o funcionário não existe na base de dados.
      *
      * @param cadastroPFDto
      * @param result
-     */
+     *//*
     private void validarDadosExistentes(CadastroPFDto cadastroPFDto, BindingResult result) {
-        Optional<Empresa> empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getCnpj());
+        var empresa = this.empresaService.buscarPorCnpj(cadastroPFDto.getCnpj());
         if (!empresa.isPresent()) {
             result.addError(new ObjectError("empresa", "Empresa não cadastrada."));
         }
@@ -92,17 +76,17 @@ public class CadastroPFController {
                 .ifPresent(func -> result.addError(new ObjectError("funcionario", "Email já existente.")));
     }
 
-    /**
+    *//**
      * Converte os dados do DTO para funcionário.
      *
      * @param cadastroPFDto
      * @param result
      * @return Funcionario
      * @throws NoSuchAlgorithmException
-     */
+     *//*
     private Funcionario converterDtoParaFuncionario(CadastroPFDto cadastroPFDto, BindingResult result)
             throws NoSuchAlgorithmException {
-        Funcionario funcionario = new Funcionario();
+        var funcionario = new Funcionario();
         funcionario.setNome(cadastroPFDto.getNome());
         funcionario.setEmail(cadastroPFDto.getEmail());
         funcionario.setCpf(cadastroPFDto.getCpf());
@@ -117,15 +101,15 @@ public class CadastroPFController {
         return funcionario;
     }
 
-    /**
+    *//**
      * Popula o DTO de cadastro com os dados do funcionário e empresa.
      *
      * @param funcionario
      * @return CadastroPFDto
-     */
+     *//*
     private CadastroPFDto converterCadastroPFDto(Funcionario funcionario) {
-        CadastroPFDto cadastroPFDto = new CadastroPFDto();
-        cadastroPFDto.setId(funcionario.getId());
+        var cadastroPFDto = new CadastroPFDto();
+        //cadastroPFDto.setId(funcionario.getId());
         cadastroPFDto.setNome(funcionario.getNome());
         cadastroPFDto.setEmail(funcionario.getEmail());
         cadastroPFDto.setCpf(funcionario.getCpf());
@@ -139,5 +123,5 @@ public class CadastroPFController {
 
         return cadastroPFDto;
     }
-
+*/
 }
