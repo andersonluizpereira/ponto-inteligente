@@ -1,0 +1,28 @@
+endpoints:
+    beans:
+        enabled: true
+        id: springbeans
+        sensitive: false
+jwt:
+    expiration: 604800
+    secret: _@HRL&L3tF?Z7ccj4z&L5!nU2B!Rjs3_
+paginacao:
+    qtd_por_pagina: 25
+server:
+    port: 8065
+spring:
+    datasource:
+        password: root
+        url: jdbc:mysql://localhost:3306/ponto_inteligente
+        username: root
+    jpa:
+        hibernate:
+            ddl-auto: none
+        properties:
+            hibernate:
+                format_sql: true
+                show_sql: true
+                type: trace
+                use_sql_comments: true
+    profiles:
+        active: dev

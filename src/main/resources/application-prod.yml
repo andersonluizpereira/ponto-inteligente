@@ -1,0 +1,17 @@
+jwt:
+    expiration: 604800
+    secret: _@POE&L3tF?65O9j4z&L5!nU2B!eT65_
+paginacao:
+    qtd_por_pagina: 25
+spring:
+    datasource:
+        url: mysql://bab39d36310b92:c39134ef@us-cdbr-iron-east-05.cleardb.net/heroku_b45cf558d7d7807?reconnect=true
+    jpa:
+        hibernate:
+            ddl-auto: none
+        properties:
+            hibernate:
+                format_sql: false
+                show_sql: false
+                type: info
+                use_sql_comments: true
